@@ -27,18 +27,14 @@ BREW_PREFIX=$(brew --prefix)
 
 # Install GNU core utilities (those that come with macOS are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
-brew install git coreutils ripgrep zsh
+brew install git coreutils ripgrep zsh fzf fasd docker docker-compose \
+diff-so-fancy
 ln -s "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
+$(brew --prefix)/opt/fzf/install
 
 # Install some other useful utilities like `sponge`.
-brew install moreutils findutils
-# Install GNU `sed`, overwriting the built-in `sed`.
-brew install gnu-sed --with-default-names
-
-# Install `wget` with IRI support.
-brew install wget --with-iri
-brew install vim --with-override-system-vi
-brew install openssh screen gnupg
+brew install moreutils findutils \
+openssh screen gnupg wget vim gnu-sed
 
 # Install font tools.
 brew tap bramstein/webfonttools
@@ -54,7 +50,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 echo "installing zsh plugins"
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
+git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 echo "installing node (via n-install)"
 curl -L https://git.io/n-install | bash
@@ -67,9 +64,11 @@ npm install --global serve fkill-cli npm-quick-run \
 semantic-release-cli npm-check-updates
 
 echo "installing apps with brew cask"
-brew install --cask brave-browser visual-studio-code \
+brew tap homebrew/cask-fonts
+brew install --cask brave-browser iterm2 visual-studio-code \
 qlcolorcode qlmarkdown qlstephen quicklook-json webpquicklook \
-qlvideo spotify qmoji slack
+qlvideo spotify qmoji slack qbittorrent keepassxc font-hack-nerd-font \
+docker openvpn-connect
 
 echo "Generating a new SSH key for GitHub"
 ssh-keygen -t rsa -b 4096 -C "$my_email" -f ~/.ssh/id_rsa
@@ -84,6 +83,7 @@ mkdir -p "${HOME}/.config/bat/themes"
 git clone https://github.com/batpigandme/night-owlish "${HOME}/.config/bat/themes/night-owlish"
 bat cache --build
 
+cp fonts/*.ttf /Library/Fonts
 echo "making system modifications:"
 
 # Remove outdated versions from the cellar.

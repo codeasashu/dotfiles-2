@@ -1,3 +1,11 @@
+[user]
+  name = Ashutosh Chaudhary
+  email = 216.ashutosh@gmail.com
+	signingkey = 95FF1102381B49CF
+
+[includeIf "gitdir:~/code/office/"]
+    path = ~/.gitconfig.office
+
 [alias]
 
 	# View abbreviated SHA, description, and history graph of the latest 20 commits.
@@ -78,6 +86,8 @@
 
 [core]
 
+	pager = diff-so-fancy | less --tabs=4 -RFXS --pattern '^(Date|added|deleted|modified): '
+
 	# Use custom `.gitignore` and `.gitattributes`.
 	excludesfile = ~/.gitignore
 	attributesfile = ~/.gitattributes
@@ -99,6 +109,7 @@
 	# https://git-scm.com/docs/git-update-index#_untracked_cache
 	untrackedCache = true
 
+
 [color]
 
 	# Use colors in Git commands that are capable of colored output when
@@ -115,8 +126,16 @@
 
 	meta = yellow bold
 	frag = magenta bold # line info
-	old = red # deletions
-	new = green # additions
+  commit = yellow bold
+	old = red bold # deletions
+	new = green bold # additions
+	whitespace = red reverse
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
 
 [color "status"]
 
@@ -129,15 +148,22 @@
 	# https://help.github.com/articles/signing-commits-using-gpg/
 	gpgsign = true
 
+[gpg]
+	program = gpg
+
 [diff]
 
 	# Detect copies as well as renames.
 	renames = copies
+	tool = vscode
 
 [diff "bin"]
 
 	# Use `hexdump` to diff binary files.
 	textconv = hexdump -v -C
+
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE
 
 [help]
 
@@ -178,6 +204,5 @@
 
 	insteadOf = "gist:"
 
-[init]
-
-	defaultBranch = main
+[diff-so-fancy]
+	stripLeadingSymbols = false
