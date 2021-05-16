@@ -17,6 +17,7 @@ connect_cloud() {
         fi;
         rclone copy mycloud:/dotfiles/$folder $DESTN/$folder
     done;
+		chmod 400 ~/.ssh/*.pem
 }
 
 connect_cloud ~
