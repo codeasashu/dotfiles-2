@@ -1,0 +1,8 @@
+[user]
+	signingkey = 9C0D07C834A2B767
+	name = Ashutosh Chaudhary
+	email = ashutosh.chaudhary@myoperator.co
+[diff]
+    tool = vscode
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
