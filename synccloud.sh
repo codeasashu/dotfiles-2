@@ -3,7 +3,7 @@
 ####
 # This script sync private configs from remote cloud to local filesystem
 ####
-FOLDERS=(.ssh .aws Keepass)
+FOLDERS=(.ssh .aws .gnupg Keepass)
 
 connect_cloud() {
     DESTN="$1"
