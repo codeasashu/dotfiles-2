@@ -28,7 +28,7 @@ BREW_PREFIX=$(brew --prefix)
 # Install GNU core utilities (those that come with macOS are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install git coreutils ripgrep zsh fzf fasd docker docker-compose \
-diff-so-fancy
+diff-so-fancy httpie
 ln -s "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
 $(brew --prefix)/opt/fzf/install
 
