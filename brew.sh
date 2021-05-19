@@ -28,7 +28,7 @@ BREW_PREFIX=$(brew --prefix)
 # Install GNU core utilities (those that come with macOS are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install git coreutils ripgrep zsh fzf fasd docker docker-compose \
-diff-so-fancy httpie
+diff-so-fancy httpie nvm
 ln -s "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
 $(brew --prefix)/opt/fzf/install
 
@@ -37,8 +37,12 @@ brew install moreutils findutils \
 openssh screen gnupg wget vim gnu-sed
 
 # Install font tools.
-brew tap bramstein/webfonttools
+brew tap bramstein/webfonttools 
+brew tap homebrew/autoupdate
 brew install sfnt2woff sfnt2woff-zopfli woff2
+
+# Setup brew auto-update
+brew autoupdate start --upgrade --cleanup
 
 # Install other useful binaries.
 
@@ -53,7 +57,8 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
-echo "installing node (via n-install)"
+echo "installing node..."
+nvm install node
 curl -L https://git.io/n-install | bash
 
 echo "node --version: $(node --version)"
@@ -68,7 +73,12 @@ brew tap homebrew/cask-fonts
 brew install --cask brave-browser iterm2 visual-studio-code \
 qlcolorcode qlmarkdown qlstephen quicklook-json webpquicklook \
 qlvideo spotify qmoji slack qbittorrent keepassxc font-hack-nerd-font \
-docker openvpn-connect
+docker openvpn-connect android-file-transfer
+
+# Download vim-plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 
 echo "Generating a new SSH key for GitHub"
 ssh-keygen -t rsa -b 4096 -C "$my_email" -f ~/.ssh/id_rsa
