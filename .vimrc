@@ -8,6 +8,8 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
+" Plug 'jesseleite/vim-agriculture'
 Plug 'scrooloose/nerdcommenter'
 Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-fugitive'
@@ -61,9 +63,6 @@ nmap ++ <plug>NERDCommenterToggle
 " Clear search highlights
 map <silent> <leader><cr> :noh<cr>
 
-" fzf key bindings
-nmap <Leader>f :GFiles<CR>
-nmap <Leader>b :Buffers<CR>
 " Don’t add empty newlines at the end of files
 set binary
 set noeol
@@ -226,5 +225,73 @@ endif
 
 let macvim_skip_colorscheme = 1
 
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case --follow -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 " Faster search
-map <leader>g :Rg 
+nnoremap <silent> <leader>/ :<C-u>FzfPreviewLinesRpc --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+nnoremap <leader>f :RG 
+nnoremap <silent> <leader>b     :<C-u>FzfPreviewBuffersRpc<CR>
+nnoremap <silent> <leader>B     :<C-u>FzfPreviewAllBuffersRpc<CR>
+nnoremap <silent> <leader>j :<C-u>FzfPreviewJumpsRpc<CR>
+nmap <Leader>t :Windows<CR>
+" Non Git files can be simply searched
+nmap <Leader>P :Files<CR> 
+nnoremap <silent> <leader>o     :<C-u>CocCommand fzf-preview.ProjectFiles project_mru git<CR>
+nnoremap <silent> <leader>p     :<C-u>FzfPreviewFromResourcesRpc buffer project_mru git<CR>
+" nmap <Leader>/ <Plug>RgRawSearch
+" vmap <Leader>/ <Plug>RgRawVisualSelection
+" nmap <Leader>* <Plug>RgRawWordUnderCursor
+
+"command! -nargs=* Rg
+  "\ call fzf#vim#grep(
+  "\   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>),
+  "\   1,
+  "\   {'options': '--delimiter : --nth 2..'})
+
+" ripgrep
+
+
+let g:fzf_preview_buffers_jump = 1
+let g:fzf_preview_lines_command = 'bat --color=always --plain --number'
+let g:fzf_preview_command = 'bat --color=always --plain {-1}'
+
+nmap <Leader>, [fzf-p]
+xmap <Leader>, [fzf-p]
+
+
+" fzf key bindings
+" Easy tab switching
+" nnoremap <silent> <Leader>f     :<C-u>FzfPreviewFromResourcesRpc project_mru git<CR>  This is another way of finding files in the project
+" Search in git tracked files
+" nnoremap <silent> [fzf-p]gs    :<C-u>FzfPreviewGitStatusRpc<CR>
+" nnoremap <silent> [fzf-p]ga    :<C-u>FzfPreviewGitActionsRpc<CR>
+" nnoremap <silent> [fzf-p]g;    :<C-u>FzfPreviewChangesRpc<CR>
+nnoremap          [fzf-p]f    :<C-u>FzfPreviewProjectGrepRpc<Space>
+"xnoremap          [fzf-p]gr    "sy:FzfPreviewProjectGrepRpc<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
+"nnoremap <silent> [fzf-p]t     :<C-u>FzfPreviewBufferTagsRpc<CR>
+"nnoremap <silent> [fzf-p]q     :<C-u>FzfPreviewQuickFixRpc<CR>
+"nnoremap <silent> [fzf-p]l     :<C-u>FzfPreviewLocationListRpc<CR>
+
+
+" Fugitive mappings
+" Fugitive mapping
+nmap <leader>gb :Gblame<cr>
+nmap <leader>gco :Git checkout<cr>
+nmap <leader>gc :Git commit<cr>
+nmap <leader>gC :Git commit -a -m <cr>
+nmap <leader>gd :Gdiff<cr>
+nmap <leader>gg :Ggrep
+nmap <leader>gl :Glog<cr>
+nmap <leader>gp :Git pull<cr>
+nmap <leader>gP :Git push<cr>
+nmap <leader>gs :Gstatus<cr>
+nmap <leader>gw :Gbrowse<cr>
+nmap <leader>ga :Gwrite<cr>
+nmap <leader>g? :map <leader>g<cr>
