@@ -28,7 +28,7 @@ BREW_PREFIX=$(brew --prefix)
 # Install GNU core utilities (those that come with macOS are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install git coreutils ripgrep zsh fzf fasd docker docker-compose \
-diff-so-fancy httpie nvm
+diff-so-fancy httpie jq nvm
 ln -s "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
 $(brew --prefix)/opt/fzf/install
 
@@ -73,7 +73,7 @@ brew tap homebrew/cask-fonts
 brew install --cask brave-browser iterm2 visual-studio-code \
 qlcolorcode qlmarkdown qlstephen quicklook-json webpquicklook \
 qlvideo spotify qmoji slack qbittorrent keepassxc font-hack-nerd-font \
-docker openvpn-connect android-file-transfer
+docker openvpn-connect android-file-transfer mpv
 
 # Download vim-plug
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \

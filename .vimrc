@@ -16,6 +16,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'nvie/vim-flake8'
 Plug 'ryanoasis/vim-devicons'
 Plug 'morhetz/gruvbox'
+Plug 'shumphrey/fugitive-gitlab.vim'
+Plug 'tpope/vim-rhubarb'
 "Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
 " Reference: https://gist.github.com/codeasashu/c2bf15e44ce6db27d3b4408e808bbd58
@@ -43,7 +45,9 @@ set clipboard=unnamed
 " Enhance command-line completion
 set wildmenu
 " Allow cursor keys in insert mode
-set esckeys
+if !has('nvim')
+  set esckeys
+endif
 " Allow backspace in insert mode
 set backspace=indent,eol,start
 " Optimize for fast terminal connections
@@ -165,7 +169,7 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 " highlight link GitGutterChangeLineNr Underlined
 
 let g:lightline = {
-      \ 'colorscheme': 'solarized dark',
+      \ 'colorscheme': 'gruvbox',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ]
@@ -199,6 +203,8 @@ nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
 nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+
+command! -nargs=0 Format :call CocAction('format')
 
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
@@ -271,8 +277,8 @@ xmap <Leader>, [fzf-p]
 " nnoremap <silent> <Leader>f     :<C-u>FzfPreviewFromResourcesRpc project_mru git<CR>  This is another way of finding files in the project
 " Search in git tracked files
 " nnoremap <silent> [fzf-p]gs    :<C-u>FzfPreviewGitStatusRpc<CR>
-" nnoremap <silent> [fzf-p]ga    :<C-u>FzfPreviewGitActionsRpc<CR>
-" nnoremap <silent> [fzf-p]g;    :<C-u>FzfPreviewChangesRpc<CR>
+nnoremap <silent> [fzf-p]ga    :<C-u>FzfPreviewGitActionsRpc<CR>
+nnoremap <silent> [fzf-p]g;    :<C-u>FzfPreviewChangesRpc<CR>
 nnoremap          [fzf-p]f    :<C-u>FzfPreviewProjectGrepRpc<Space>
 "xnoremap          [fzf-p]gr    "sy:FzfPreviewProjectGrepRpc<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
 "nnoremap <silent> [fzf-p]t     :<C-u>FzfPreviewBufferTagsRpc<CR>
@@ -283,7 +289,6 @@ nnoremap          [fzf-p]f    :<C-u>FzfPreviewProjectGrepRpc<Space>
 " Fugitive mappings
 " Fugitive mapping
 nmap <leader>gb :Gblame<cr>
-nmap <leader>gco :Git checkout<cr>
 nmap <leader>gc :Git commit<cr>
 nmap <leader>gC :Git commit -a -m <cr>
 nmap <leader>gd :Gdiff<cr>
