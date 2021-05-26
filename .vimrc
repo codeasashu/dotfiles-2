@@ -13,12 +13,23 @@ Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'stsewd/fzf-checkout.vim'
+Plug 'junegunn/gv.vim'
+Plug 'szw/vim-maximizer'
 Plug 'nvie/vim-flake8'
 Plug 'ryanoasis/vim-devicons'
 Plug 'morhetz/gruvbox'
 Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'tpope/vim-rhubarb'
-"Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'svermeulen/vim-cutlass'
+
+" Javascript related plugins
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'jparise/vim-graphql'
+" Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
 " Reference: https://gist.github.com/codeasashu/c2bf15e44ce6db27d3b4408e808bbd58
 " Initialize plugin system
@@ -53,7 +64,7 @@ set backspace=indent,eol,start
 " Optimize for fast terminal connections
 set ttyfast
 " Add the g flag to search/replace by default
-set gdefault
+set nogdefault
 " Use UTF-8 without BOM
 set encoding=utf-8 nobomb
 " Change mapleader
@@ -63,6 +74,11 @@ nmap ,n :NERDTreeFind<CR>
 nmap ,m :NERDTreeToggle<CR>
 vmap ++ <plug>NERDCommenterToggle
 nmap ++ <plug>NERDCommenterToggle
+
+" Maximize in split window settings
+nnoremap <silent>+ :MaximizerToggle<CR>
+vnoremap <silent>+ :MaximizerToggle<CR>gv
+inoremap <silent><F3> <C-o>:MaximizerToggle<CR>
 
 " Clear search highlights
 map <silent> <leader><cr> :noh<cr>
@@ -151,6 +167,19 @@ endfunction
 
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
+" Coc global extensions
+let g:coc_global_extensions = [
+  \ 'coc-tsserver'
+  \ ]
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+  let g:coc_global_extensions += ['coc-prettier']
+endif
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+  let g:coc_global_extensions += ['coc-eslint']
+endif
+
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -182,29 +211,41 @@ let g:lightline = {
       \ }
 
 
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
+function! ShowDocIfNoDiagnostic(timer_id)
+  if (coc#float#has_float() == 0)
+    silent call CocActionAsync('doHover')
   endif
 endfunction
+
+function! s:show_documentation()
+  call timer_start(500, 'ShowDocIfNoDiagnostic')
+endfunction
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+"autocmd CursorHoldI * :call <SID>show_documentation()
+"autocmd CursorHold * :call <SID>show_documentation()
+
 
 " Highlight symbol under cursor on CursorHold
 " autocmd CursorHold * call CocActionAsync('highlight')
 
-" Highlight currently open buffer in NERDTree
-" autocmd BufEnter * call SyncTree()
+" Highlight Javascript files
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Find symbol of current document
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
 nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nmap <leader>rn <Plug>(coc-rename)
 
+" Code formatting and imports related
 command! -nargs=0 Format :call CocAction('format')
+command! -nargs=0 Import :call CocAction('runCommand', 'pyright.organizeimports')
+nnoremap <leader>f :<C-u>Format<cr>
+nnoremap <leader>i :<C-u>Import<cr>
 
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
@@ -215,8 +256,6 @@ function! StripWhitespace()
 	call setreg('/', old_query)
 endfunction
 noremap <leader>ss :call StripWhitespace()<CR>
-" Save a file as root (,W)
-noremap <leader>W :w !sudo tee % > /dev/null<CR>
 
 " Automatic commands
 if has("autocmd")
@@ -241,16 +280,17 @@ endfunction
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 " Faster search
-nnoremap <silent> <leader>/ :<C-u>FzfPreviewLinesRpc --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
-nnoremap <leader>f :RG 
-nnoremap <silent> <leader>b     :<C-u>FzfPreviewBuffersRpc<CR>
-nnoremap <silent> <leader>B     :<C-u>FzfPreviewAllBuffersRpc<CR>
+nnoremap <silent> <Space>/ :<C-u>FzfPreviewLinesRpc --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+nnoremap <leader>/ :RG 
+nnoremap <silent> <leader>b     :<C-u>Buffers<CR>
+nnoremap <silent> <leader>B     :<C-u>FzfPreviewBuffersRpc<CR>
 nnoremap <silent> <leader>j :<C-u>FzfPreviewJumpsRpc<CR>
 nmap <Leader>t :Windows<CR>
 " Non Git files can be simply searched
-nmap <Leader>P :Files<CR> 
-nnoremap <silent> <leader>o     :<C-u>CocCommand fzf-preview.ProjectFiles project_mru git<CR>
-nnoremap <silent> <leader>p     :<C-u>FzfPreviewFromResourcesRpc buffer project_mru git<CR>
+nmap <Leader>p :GFiles<CR> 
+nmap <Leader>o :Files<CR> 
+nnoremap <silent> <leader>O     :<C-u>CocCommand fzf-preview.ProjectFiles project_mru git<CR>
+nnoremap <silent> <leader>P     :<C-u>FzfPreviewFromResourcesRpc buffer project_mru git<CR>
 " nmap <Leader>/ <Plug>RgRawSearch
 " vmap <Leader>/ <Plug>RgRawVisualSelection
 " nmap <Leader>* <Plug>RgRawWordUnderCursor
@@ -263,6 +303,11 @@ nnoremap <silent> <leader>p     :<C-u>FzfPreviewFromResourcesRpc buffer project_
 
 " ripgrep
 
+" Mapping for moving b/w windows and tabs
+nnoremap <Space>j <C-W>j
+nnoremap <Space>k <C-W>k
+nnoremap <Space>h <C-W>h
+nnoremap <Space>l <C-W>l
 
 let g:fzf_preview_buffers_jump = 1
 let g:fzf_preview_lines_command = 'bat --color=always --plain --number'
@@ -300,3 +345,6 @@ nmap <leader>gs :Gstatus<cr>
 nmap <leader>gw :Gbrowse<cr>
 nmap <leader>ga :Gwrite<cr>
 nmap <leader>g? :map <leader>g<cr>
+
+" Search and replace highlighted text in visual mode
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>

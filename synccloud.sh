@@ -3,7 +3,7 @@
 ####
 # This script sync private configs from remote cloud to local filesystem
 ####
-FOLDERS=(.ssh .aws .gnupg Keepass)
+FOLDERS=(.ssh .aws .gnupg Keepass gpg)
 
 connect_cloud() {
     DESTN="$1"
@@ -21,3 +21,5 @@ connect_cloud() {
 }
 
 connect_cloud ~
+
+chmod +x $PWD/syncpass.sh && $PWD/syncpass.sh

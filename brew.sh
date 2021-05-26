@@ -73,7 +73,7 @@ brew tap homebrew/cask-fonts
 brew install --cask brave-browser iterm2 visual-studio-code \
 qlcolorcode qlmarkdown qlstephen quicklook-json webpquicklook \
 qlvideo spotify qmoji slack qbittorrent keepassxc font-hack-nerd-font \
-docker openvpn-connect android-file-transfer mpv
+docker openvpn-connect android-file-transfer mpv joplin dbeaver-community
 
 # Download vim-plug
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
