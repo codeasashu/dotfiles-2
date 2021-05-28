@@ -33,7 +33,7 @@ ln -s "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
 $(brew --prefix)/opt/fzf/install
 
 # Install some other useful utilities like `sponge`.
-brew install moreutils findutils \
+brew install moreutils findutils mysql \
 openssh screen gnupg wget vim gnu-sed
 
 # Install font tools.
