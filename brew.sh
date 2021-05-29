@@ -29,6 +29,7 @@ BREW_PREFIX=$(brew --prefix)
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install git coreutils ripgrep zsh fzf fasd docker docker-compose \
 diff-so-fancy httpie jq nvm
+brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 ln -s "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
 $(brew --prefix)/opt/fzf/install
 

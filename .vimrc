@@ -22,6 +22,14 @@ Plug 'morhetz/gruvbox'
 Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'tpope/vim-rhubarb'
 Plug 'svermeulen/vim-cutlass'
+Plug 'svermeulen/vim-subversive'
+
+" Terraform related
+Plug 'hashivim/vim-terraform'
+
+" Deletion and yanks
+Plug 'svermeulen/vim-yoink'
+Plug 'svermeulen/vim-cutlass'
 
 " Javascript related plugins
 Plug 'pangloss/vim-javascript'
@@ -43,6 +51,32 @@ endif
 
 let g:NERDTreeGitStatusWithFlags = 1
 let g:NERDTreeIgnore = ['^node_modules$', '^venv$']
+
+" Yank actions
+nmap <c-n> <plug>(YoinkPostPasteSwapBack)
+nmap <c-p> <plug>(YoinkPostPasteSwapForward)
+nmap p <plug>(YoinkPaste_p)
+nmap P <plug>(YoinkPaste_P)
+" Also replace the default gp with yoink paste so we can toggle paste in this case too
+nmap gp <plug>(YoinkPaste_gp)
+nmap gP <plug>(YoinkPaste_gP)
+nmap [y <plug>(YoinkRotateBack)
+nmap ]y <plug>(YoinkRotateForward)
+let g:yoinkIncludeDeleteOperations = 1
+
+" Better delete handling
+nnoremap x d
+xnoremap x d
+nnoremap xx dd
+nnoremap X D
+
+" s for substitute
+nmap s <plug>(SubversiveSubstitute)
+nmap ss <plug>(SubversiveSubstituteLine)
+nmap S <plug>(SubversiveSubstituteToEndOfLine)
+nmap <leader>s <plug>(SubversiveSubstituteRange)
+xmap <leader>s <plug>(SubversiveSubstituteRange)
+nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
 
 " Use the Solarized Dark theme
 set background=dark
@@ -255,7 +289,7 @@ function! StripWhitespace()
 	call setpos('.', save_cursor)
 	call setreg('/', old_query)
 endfunction
-noremap <leader>ss :call StripWhitespace()<CR>
+noremap <space>ss :call StripWhitespace()<CR>
 
 " Automatic commands
 if has("autocmd")
@@ -331,7 +365,6 @@ nnoremap          [fzf-p]f    :<C-u>FzfPreviewProjectGrepRpc<Space>
 "nnoremap <silent> [fzf-p]l     :<C-u>FzfPreviewLocationListRpc<CR>
 
 
-" Fugitive mappings
 " Fugitive mapping
 nmap <leader>gb :Gblame<cr>
 nmap <leader>gc :Git commit<cr>
