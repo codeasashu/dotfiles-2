@@ -28,7 +28,7 @@ BREW_PREFIX=$(brew --prefix)
 # Install GNU core utilities (those that come with macOS are outdated).
 # Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
 brew install git coreutils ripgrep zsh fzf fasd docker docker-compose \
-diff-so-fancy httpie jq nvm
+diff-so-fancy httpie jq nvm go
 brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 ln -s "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
 $(brew --prefix)/opt/fzf/install
@@ -67,7 +67,7 @@ echo "npm --version: $(npm --version)"
 
 echo "installing a few global npm packages"
 npm install --global serve fkill-cli npm-quick-run \
-semantic-release-cli npm-check-updates
+semantic-release-cli npm-check-updates instant-markdown-d
 
 echo "installing apps with brew cask"
 brew tap homebrew/cask-fonts
@@ -89,6 +89,9 @@ touch ~/.ssh/config
 echo "Host *\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/id_rsa" | tee ~/.ssh/config
 ssh-add -K ~/.ssh/id_rsa
 echo "run 'pbcopy < ~/.ssh/id_rsa.pub' and paste that into GitHub"
+
+# Install COC extensions
+vim -c 'CocInstall -sync coc-json coc-html coc-tsserver coc-flow coc-prettier coc-eslint coc-pyright coc-phpls coc-fzf-preview|q'
 
 # get bat and delta all configured
 mkdir -p "${HOME}/.config/bat/themes"

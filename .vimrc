@@ -23,25 +23,36 @@ Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'tpope/vim-rhubarb'
 Plug 'svermeulen/vim-cutlass'
 Plug 'svermeulen/vim-subversive'
+Plug 'cespare/vim-toml'
+Plug 'vim-test/vim-test'
+"Plug 'neovim/nvim-lspconfig'
+"Plug 'kabouzeid/nvim-lspinstall'
 
 " Terraform related
 Plug 'hashivim/vim-terraform'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'easymotion/vim-easymotion'
+Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
+" Markdown related
 
 " Deletion and yanks
 Plug 'svermeulen/vim-yoink'
 Plug 'svermeulen/vim-cutlass'
 
 " Javascript related plugins
-Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
+Plug 'sheerun/vim-polyglot'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-Plug 'jparise/vim-graphql'
 " Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
 " Reference: https://gist.github.com/codeasashu/c2bf15e44ce6db27d3b4408e808bbd58
 " Initialize plugin system
 call plug#end()
+
+" Change mapleader
+let mapleader=","
 
 if exists('+colorcolumn')
   set colorcolumn=80
@@ -51,6 +62,9 @@ endif
 
 let g:NERDTreeGitStatusWithFlags = 1
 let g:NERDTreeIgnore = ['^node_modules$', '^venv$']
+
+let g:vim_markdown_folding_disabled = 1
+let g:javascript_plugin_flow = 1
 
 " Yank actions
 nmap <c-n> <plug>(YoinkPostPasteSwapBack)
@@ -62,21 +76,23 @@ nmap gp <plug>(YoinkPaste_gp)
 nmap gP <plug>(YoinkPaste_gP)
 nmap [y <plug>(YoinkRotateBack)
 nmap ]y <plug>(YoinkRotateForward)
+nmap y <plug>(YoinkYankPreserveCursorPosition)
+xmap y <plug>(YoinkYankPreserveCursorPosition)
 let g:yoinkIncludeDeleteOperations = 1
 
 " Better delete handling
-nnoremap x d
-xnoremap x d
-nnoremap xx dd
-nnoremap X D
+nnoremap m d
+xnoremap m d
+nnoremap mm dd
+nnoremap M D
 
 " s for substitute
-nmap s <plug>(SubversiveSubstitute)
-nmap ss <plug>(SubversiveSubstituteLine)
-nmap S <plug>(SubversiveSubstituteToEndOfLine)
-nmap <leader>s <plug>(SubversiveSubstituteRange)
-xmap <leader>s <plug>(SubversiveSubstituteRange)
-nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
+"nmap s <plug>(SubversiveSubstitute)
+"nmap ss <plug>(SubversiveSubstituteLine)
+"nmap S <plug>(SubversiveSubstituteToEndOfLine)
+"nmap <leader>s <plug>(SubversiveSubstituteRange)
+"xmap <leader>s <plug>(SubversiveSubstituteRange)
+"nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
 
 " Use the Solarized Dark theme
 set background=dark
@@ -101,8 +117,6 @@ set ttyfast
 set nogdefault
 " Use UTF-8 without BOM
 set encoding=utf-8 nobomb
-" Change mapleader
-let mapleader=","
 
 nmap ,n :NERDTreeFind<CR>
 nmap ,m :NERDTreeToggle<CR>
@@ -228,6 +242,29 @@ xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 
+" instead of having ~/.vim/coc-settings.json
+let s:LSP_CONFIG = {
+\  'flow': {
+\    'command': exepath('flow'),
+\    'args': ['lsp'],
+\    'filetypes': ['javascript', 'javascriptreact'],
+\    'initializationOptions': {},
+\    'requireRootPattern': 1,
+\    'settings': {},
+\    'rootPatterns': ['.flowconfig']
+\  }
+\}
+
+let s:languageservers = {}
+for [lsp, config] in items(s:LSP_CONFIG)
+  let s:not_empty_cmd = !empty(get(config, 'command'))
+  if s:not_empty_cmd | let s:languageservers[lsp] = config | endif
+endfor
+
+if !empty(s:languageservers)
+  call coc#config('languageserver', s:languageservers)
+  endif
+
 " let g:gitgutter_sign_allow_clobber = 1
 " highlight link GitGutterChangeLineNr Underlined
 
@@ -319,7 +356,7 @@ nnoremap <leader>/ :RG
 nnoremap <silent> <leader>b     :<C-u>Buffers<CR>
 nnoremap <silent> <leader>B     :<C-u>FzfPreviewBuffersRpc<CR>
 nnoremap <silent> <leader>j :<C-u>FzfPreviewJumpsRpc<CR>
-nmap <Leader>t :Windows<CR>
+nmap <Leader>l :Windows<CR>
 " Non Git files can be simply searched
 nmap <Leader>p :GFiles<CR> 
 nmap <Leader>o :Files<CR> 
@@ -378,6 +415,13 @@ nmap <leader>gs :Gstatus<cr>
 nmap <leader>gw :Gbrowse<cr>
 nmap <leader>ga :Gwrite<cr>
 nmap <leader>g? :map <leader>g<cr>
+
+"Add tests
+nmap <silent> <leader>tn :TestNearest<CR>
+nmap <silent> <leader>tf :TestFile<CR>
+nmap <silent> <leader>ts :TestSuite<CR>
+nmap <silent> <leader>tl :TestLast<CR>
+nmap <silent> <leader>tv :TestVisit<CR>
 
 " Search and replace highlighted text in visual mode
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
