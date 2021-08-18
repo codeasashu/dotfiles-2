@@ -2,13 +2,13 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree'
-"Plug 'tsony-tsonev/nerdtree-git-plugin'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-dispatch'
 " Plug 'jesseleite/vim-agriculture'
 Plug 'scrooloose/nerdcommenter'
 Plug 'itchyny/lightline.vim'
@@ -21,10 +21,10 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'morhetz/gruvbox'
 Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'tpope/vim-rhubarb'
-Plug 'svermeulen/vim-cutlass'
-Plug 'svermeulen/vim-subversive'
 Plug 'cespare/vim-toml'
 Plug 'vim-test/vim-test'
+Plug 'pangloss/vim-javascript'    " JavaScript support
+Plug 'leafgarland/typescript-vim' " TypeScript syntax
 "Plug 'neovim/nvim-lspconfig'
 "Plug 'kabouzeid/nvim-lspinstall'
 
@@ -37,10 +37,6 @@ Plug 'plasticboy/vim-markdown'
 Plug 'easymotion/vim-easymotion'
 Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
 " Markdown related
-
-" Deletion and yanks
-Plug 'svermeulen/vim-yoink'
-Plug 'svermeulen/vim-cutlass'
 
 " Javascript related plugins
 Plug 'sheerun/vim-polyglot'
@@ -66,26 +62,6 @@ let g:NERDTreeIgnore = ['^node_modules$', '^venv$']
 let g:vim_markdown_folding_disabled = 1
 let g:javascript_plugin_flow = 1
 
-" Yank actions
-nmap <c-n> <plug>(YoinkPostPasteSwapBack)
-nmap <c-p> <plug>(YoinkPostPasteSwapForward)
-nmap p <plug>(YoinkPaste_p)
-nmap P <plug>(YoinkPaste_P)
-" Also replace the default gp with yoink paste so we can toggle paste in this case too
-nmap gp <plug>(YoinkPaste_gp)
-nmap gP <plug>(YoinkPaste_gP)
-nmap [y <plug>(YoinkRotateBack)
-nmap ]y <plug>(YoinkRotateForward)
-nmap y <plug>(YoinkYankPreserveCursorPosition)
-xmap y <plug>(YoinkYankPreserveCursorPosition)
-let g:yoinkIncludeDeleteOperations = 1
-
-" Better delete handling
-nnoremap m d
-xnoremap m d
-nnoremap mm dd
-nnoremap M D
-
 " s for substitute
 "nmap s <plug>(SubversiveSubstitute)
 "nmap ss <plug>(SubversiveSubstituteLine)
@@ -93,6 +69,13 @@ nnoremap M D
 "nmap <leader>s <plug>(SubversiveSubstituteRange)
 "xmap <leader>s <plug>(SubversiveSubstituteRange)
 "nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
+
+let test#strategy = {
+  \ 'nearest': 'neovim',
+  \ 'file':    'dispatch',
+  \ 'suite':   'basic',
+\}
+
 
 " Use the Solarized Dark theme
 set background=dark
@@ -267,20 +250,22 @@ if !empty(s:languageservers)
 
 " let g:gitgutter_sign_allow_clobber = 1
 " highlight link GitGutterChangeLineNr Underlined
-
 let g:lightline = {
       \ 'colorscheme': 'gruvbox',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'gitbranch', 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ],
+      \   'right': [ [ 'lineinfo' ],
+      \              [ 'percent' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype', 'obsession' ] ]
       \ },
       \ 'component_function': {
       \   'gitbranch': 'FugitiveHead',
       \   'cocstatus': 'coc#status',
       \   'currentfunction': 'CocCurrentFunction',
+      \   'obsession': 'ObsessionStatus'
       \ },
       \ }
-
 
 function! ShowDocIfNoDiagnostic(timer_id)
   if (coc#float#has_float() == 0)
@@ -358,7 +343,7 @@ nnoremap <silent> <leader>B     :<C-u>FzfPreviewBuffersRpc<CR>
 nnoremap <silent> <leader>j :<C-u>FzfPreviewJumpsRpc<CR>
 nmap <Leader>l :Windows<CR>
 " Non Git files can be simply searched
-nmap <Leader>p :GFiles<CR> 
+nmap <Leader>p :GFiles --exclude-standard --others --cached<CR> 
 nmap <Leader>o :Files<CR> 
 nnoremap <silent> <leader>O     :<C-u>CocCommand fzf-preview.ProjectFiles project_mru git<CR>
 nnoremap <silent> <leader>P     :<C-u>FzfPreviewFromResourcesRpc buffer project_mru git<CR>
@@ -384,8 +369,8 @@ let g:fzf_preview_buffers_jump = 1
 let g:fzf_preview_lines_command = 'bat --color=always --plain --number'
 let g:fzf_preview_command = 'bat --color=always --plain {-1}'
 
-nmap <Leader>, [fzf-p]
-xmap <Leader>, [fzf-p]
+nmap <Leader>. [fzf-p]
+xmap <Leader>. [fzf-p]
 
 
 " fzf key bindings
