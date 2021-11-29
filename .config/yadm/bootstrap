@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+
+###############################################################################
+# Arch Customizations                                                       #
+###############################################################################
+command_exists() {
+	type "$1" > /dev/null 2>&1
+}
+
+echo "Hello $(whoami)! Let's get you set up."
+
+echo "Preparing code space"
+mkdir -p "${HOME}/code/office"
+mkdir -p "${HOME}/code/personal"
+
+echo "Installing stuff"
+
+# Install command-line tools using Homebrew.
+# Make sure we’re using the latest Homebrew.
+sudo pacman -Sy
+
+DEV_PKG="git rsync neovim zsh zsh-completions kitty fasd fzf ctags cmake docker docker-compose ripgrep python3 python-pip openssh httpie jq tig nvm code dbeaver"
+DISP_PKG="xsel feh w3m scrot"
+EXTRA_PKG="ntp jsoncpp tldr wmctrl wget tree zip unzip rclone diff-so-fancy bat lolcat udiskie android-file-transfer android-udev"
+FONTS_PKG="noto-fonts ttf-hack"
+MUSIC_PKG="mpv qbittorrent"
+I3_PKG="compton neofetch rofi ranger python-pywal"
+SYSTEM_PKG="networkmanager network-manager-applet networkmanager-openvpn "
+PACKAGES="$DISP_PKG $I3_PKG $DEV_PKG $EXTRA_PKG $MUSIC_PKG $FONTS_PKG $SYSTEM_PKG"
+
+sudo pacman -S $PACKAGES
+
+# Install other useful binaries.
+echo "installing oh-my-zsh"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+echo "installing zsh plugins"
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+echo "installing nvm..."
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+if [ -f $HOME/.zshrc ]; then
+	source $HOME/.zshrc
+else
+	source $HOME/.bashrc
+fi
+
+echo "installing node..."
+nvm install node
+
+echo "node --version: $(node --version)"
+echo "npm --version: $(npm --version)"
+
+echo "installing a few global npm packages"
+npm install --global serve fkill-cli npm-quick-run \
+semantic-release-cli npm-check-updates instant-markdown-d
+
+# Install yay
+if ! command_exists yay; then
+	git clone https://aur.archlinux.org/yay.git yay
+	cd yay
+	makepkg -si
+	cd ../
+fi;
+
+echo "installing apps with yay"
+yay -S brave slack-desktop joplin
+
+# Download vim-plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# Install COC extensions
+# vim -c 'CocInstall -sync coc-json coc-html coc-tsserver coc-flow coc-prettier coc-eslint coc-pyright coc-phpls coc-fzf-preview|q'
+
+# get bat and delta all configured
+mkdir -p "${HOME}/.config/bat/themes"
+git clone https://github.com/batpigandme/night-owlish "${HOME}/.config/bat/themes/night-owlish"
+bat cache --build
+
+echo "Copying fonts...."
+mkdir ~/.local/share/fonts
+cp fonts/*.ttf ~/.local/share/fonts
+fc-cache -f
+
+if [ ! -f $HOME/.ssh/id_rsa ]; then
+	echo "Generating a new SSH key for GitHub"
+	read -p "Enter your emailid: " my_email
+	ssh-keygen -t rsa -b 4096 -C "$my_email" -f ~/.ssh/id_rsa
+	eval "$(ssh-agent -s)"
+	touch ~/.ssh/config
+	echo "Host *\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/id_rsa" | tee ~/.ssh/config
+	ssh-add -K ~/.ssh/id_rsa
+	cat ~/.ssh/id_rsa.pub | clipcopy
+	echo "content of ~/.ssh/id_rsa.pub has been copied to your clipboard. Paste that into GitHub"
+fi
+
+# Post Setup
+## Fix SSH Perms
+sudo chmod 400 $HOME/.ssh/id_rsa
+
+## Fix docker group perm
+sudo usermod -aG docker $USER
