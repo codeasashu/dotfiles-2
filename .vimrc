@@ -396,7 +396,7 @@ nmap <leader>gg :Ggrep
 nmap <leader>gl :Glog<cr>
 nmap <leader>gp :Git pull<cr>
 nmap <leader>gP :Git push<cr>
-nmap <leader>gs :Gstatus<cr>
+nmap <leader>gs :Git<cr>
 nmap <leader>gw :Gbrowse<cr>
 nmap <leader>ga :Gwrite<cr>
 nmap <leader>g? :map <leader>g<cr>
