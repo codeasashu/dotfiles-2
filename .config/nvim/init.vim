@@ -1,0 +1,1 @@
+/home/ashutosh/.vimrc
