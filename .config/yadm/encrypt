@@ -3,3 +3,4 @@
 .ssh/id_rsa
 .ssh/id_rsa.pub
 .ssh/*.pem
+.config/mopidy/mopidy.conf
