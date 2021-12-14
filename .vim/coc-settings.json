@@ -1,12 +1,20 @@
 {
-  "suggest.noselect": false,
-  "coc.preferences.formatOnSaveFiletypes": [
-    "javascript",
-    "typescript",
-    "typescriptreact",
-    "json",
-    "javascriptreact",
-    "typescript.tsx",
-    "graphql"
-  ]
+	"coc.preferences.formatOnType": true,
+	"suggest.noselect": false,
+	"python.formatting.provider": "black",
+	"python.linting.enabled": true,
+	"python.linting.pylintUseMinimalCheckers": false,
+	"python.linting.pylintPath": "pylint",
+	"python.linting.flake8Enabled": true,
+	"python.condaPath": "conda",
+	"coc.preferences.formatOnSaveFiletypes": [
+		"javascript",
+		"typescript",
+		"typescriptreact",
+		"json",
+		"javascriptreact",
+		"typescript.tsx",
+		"graphql",
+		"python"
+	]
 }
