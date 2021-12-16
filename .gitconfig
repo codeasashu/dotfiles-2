@@ -1,7 +1,7 @@
 [user]
   name = Ashutosh Chaudhary
   email = 216.ashutosh@gmail.com
-	signingkey = 366E6CC65F9C7ED4
+	signingkey = 4EE11615555AF9E6
 
 [includeIf "gitdir:~/code/office/"]
     path = ~/.gitconfig.office
