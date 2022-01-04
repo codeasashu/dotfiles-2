@@ -25,6 +25,7 @@ Plug 'cespare/vim-toml'
 Plug 'vim-test/vim-test'
 Plug 'pangloss/vim-javascript'    " JavaScript support
 Plug 'leafgarland/typescript-vim' " TypeScript syntax
+Plug 'editorconfig/editorconfig-vim'
 "Plug 'neovim/nvim-lspconfig'
 "Plug 'kabouzeid/nvim-lspinstall'
 
