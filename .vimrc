@@ -202,7 +202,8 @@ inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Coc global extensions
 let g:coc_global_extensions = [
-  \ 'coc-tsserver'
+  \ 'coc-tsserver',
+  \ 'coc-pyright'
   \ ]
 
 if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
@@ -339,14 +340,14 @@ endfunction
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 " Faster search
 nnoremap <silent> <Space>/ :<C-u>FzfPreviewLinesRpc --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
-nnoremap <leader>/ :RG 
+nnoremap <leader>/ :RG
 nnoremap <silent> <leader>b     :<C-u>Buffers<CR>
 nnoremap <silent> <leader>B     :<C-u>FzfPreviewBuffersRpc<CR>
 nnoremap <silent> <leader>j :<C-u>FzfPreviewJumpsRpc<CR>
 nmap <Leader>l :Windows<CR>
 " Non Git files can be simply searched
-nmap <Leader>p :GFiles --exclude-standard --others --cached<CR> 
-nmap <Leader>o :Files<CR> 
+nmap <Leader>p :GFiles --exclude-standard --others --cached<CR>
+nmap <Leader>o :Files<CR>
 nnoremap <silent> <leader>O     :<C-u>CocCommand fzf-preview.ProjectFiles project_mru git<CR>
 nnoremap <silent> <leader>P     :<C-u>FzfPreviewFromResourcesRpc buffer project_mru git<CR>
 " nmap <Leader>/ <Plug>RgRawSearch
