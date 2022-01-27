@@ -26,6 +26,7 @@ Plug 'vim-test/vim-test'
 Plug 'pangloss/vim-javascript'    " JavaScript support
 Plug 'leafgarland/typescript-vim' " TypeScript syntax
 Plug 'editorconfig/editorconfig-vim'
+Plug 'github/copilot.vim';
 "Plug 'neovim/nvim-lspconfig'
 "Plug 'kabouzeid/nvim-lspinstall'
 
@@ -41,7 +42,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 " Markdown related
 
 " Javascript related plugins
-Plug 'sheerun/vim-polyglot'
+"Plug 'sheerun/vim-polyglot'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 " Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
