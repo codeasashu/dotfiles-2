@@ -9,6 +9,7 @@ local userPlugins = require "custom.plugins"
 --   }
 -- }
 --
+
 M.plugins = {
   builtins = {
       "2html_plugin",

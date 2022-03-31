@@ -8,6 +8,9 @@ return {
       end,
    },
    {
+     "tpope/vim-dispatch"
+   },
+   {
      "tpope/vim-fugitive"
    },
    {
