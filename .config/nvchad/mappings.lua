@@ -3,6 +3,7 @@ local map = require("core.utils").map
 -- telescope
 map("n", "<leader>te", ":Telescope <CR>")
 map("n", "<leader>m", ":NvimTreeToggle <CR>")
+map("n", "<leader>h", ":FloatermToggle <CR>")
 
 -- truezen
 map("n", "<leader>ta", ":TZAtaraxis <CR>")

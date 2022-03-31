@@ -8,10 +8,19 @@ return {
       end,
    },
    {
-     "vim-test/vim-test", 
+     "tpope/vim-fugitive"
    },
    {
-     "tpope/vim-fugitive"
+     "voldikss/vim-floaterm"
+   },
+   {
+     "shumphrey/fugitive-gitlab.vim",
+   },
+   {
+     "jose-elias-alvarez/nvim-lsp-ts-utils"
+   },
+   {
+     "vim-test/vim-test", 
    },
    {
       "Pocco81/TrueZen.nvim",
