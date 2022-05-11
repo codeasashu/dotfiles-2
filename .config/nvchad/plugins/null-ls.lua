@@ -19,6 +19,10 @@ local sources = {
    -- b.formatting.deno_fmt,
   b.formatting.prettierd.with { filetypes = { "html", "markdown", "css" } },
 
+  -- golang
+  b.formatting.gofmt,
+  b.diagnostics.golangci_lint,
+
    -- Lua
   b.formatting.stylua,
   b.diagnostics.luacheck.with { extra_args = { "--global vim" } },
@@ -34,6 +38,7 @@ M.setup = function()
    null_ls.setup {
       debug = true,
       sources = sources,
+      diagnostics_format = "[#{c}] #{m} (#{s})"
    }
 end
 

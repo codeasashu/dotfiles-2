@@ -26,6 +26,9 @@ return {
      "vim-test/vim-test", 
    },
    {
+     "easymotion/vim-easymotion"
+   },
+   {
       "Pocco81/TrueZen.nvim",
       cmd = {
          "TZAtaraxis",

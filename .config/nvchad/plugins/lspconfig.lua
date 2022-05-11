@@ -2,6 +2,7 @@ local M = {}
 
 M.setup_lsp = function(attach, capabilities)
   local lspconfig = require "lspconfig"
+  local util = require "lspconfig/util"
 --
 --   lspconfig.tsserver.setup({
 --     on_attach = function(client, bufnr)
@@ -16,6 +17,20 @@ M.setup_lsp = function(attach, capabilities)
 --         on_attach(client, bufnr)
 --     end,
 -- })
+--
+  lspconfig.gopls.setup {
+    cmd = {"gopls", "serve"},
+    filetypes = {"go", "gomod"},
+    root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+    settings = {
+      gopls = {
+        analyses = {
+          unusedparams = true,
+        },
+        staticcheck = true,
+      },
+    },
+  }
 
   -- lspservers with default config
   local servers = {"pyright", "tsserver", "eslint", "bashls", 'dockerls', 'jsonls', 'phpactor', 'yamlls'}
