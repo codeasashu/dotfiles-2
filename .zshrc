@@ -89,6 +89,7 @@ plugins=(
   git
   fasd
   virtualenv
+  docker-compose
   zsh-completions
   zsh-syntax-highlighting
 )
