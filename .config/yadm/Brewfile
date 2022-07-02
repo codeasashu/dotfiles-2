@@ -47,6 +47,7 @@ brew "bramstein/webfonttools/sfnt2woff-zopfli"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 cask "android-file-transfer"
 cask "anydesk"
+cask "brave-browser"
 cask "dbeaver-community"
 cask "font-hack-nerd-font"
 cask "iina"
