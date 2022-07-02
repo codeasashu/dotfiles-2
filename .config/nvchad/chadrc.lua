@@ -30,7 +30,11 @@ M.plugins = {
       "vimballPlugin",
       "zip",
       "zipPlugin",
-   },
+  },
+  override = {
+      ["kyazdani42/nvim-tree.lua"] = plugin_conf.nvimtree,
+      ["nvim-treesitter/nvim-treesitter"] = plugin_conf.treesitter,
+  },
   status = {
       colorizer = true,
   },
@@ -39,11 +43,9 @@ M.plugins = {
       setup_lspconf = "custom.plugins.lspconfig",
     },
   },
-  default_plugin_config_replace = {
-      nvim_treesitter = plugin_conf.treesitter,
-      nvim_tree = plugin_conf.nvimtree,
-  },
-  install = userPlugins,
+  user = userPlugins,
 }
+
+M.mappings = require "custom.mappings"
 
 return M

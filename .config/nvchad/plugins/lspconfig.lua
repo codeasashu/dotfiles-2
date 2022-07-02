@@ -33,7 +33,7 @@ M.setup_lsp = function(attach, capabilities)
   }
 
   -- lspservers with default config
-  local servers = {"pyright", "tsserver", "eslint", "bashls", 'dockerls', 'jsonls', 'phpactor', 'yamlls'}
+  local servers = {"pyright", "tsserver", "eslint", "bashls", 'dockerls', 'jsonls', 'yamlls'}
 
   for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {

@@ -6,7 +6,7 @@ local sources = {
   b.diagnostics.gitlint,
   b.diagnostics.jsonlint,
   b.formatting.json_tool,
-  b.diagnostics.markdownlint,
+  -- b.diagnostics.markdownlint,
 
    -- python stuff
   b.formatting.isort,
@@ -17,7 +17,7 @@ local sources = {
   b.code_actions.eslint,
   b.diagnostics.eslint,
    -- b.formatting.deno_fmt,
-  b.formatting.prettierd.with { filetypes = { "html", "markdown", "css" } },
+  -- b.formatting.prettierd.with { filetypes = { "html", "markdown", "css" } },
 
   -- golang
   b.formatting.gofmt,

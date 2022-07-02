@@ -19,7 +19,7 @@ M.treesitter = {
 
 M.nvimtree = {
    git = {
-      enable = false,
+      enable = true,
    },
    disable_netrw = false,
    hijack_netrw = false,
