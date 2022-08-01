@@ -254,6 +254,7 @@ lvim.plugins = {
   { "easymotion/vim-easymotion" },
   { "folke/tokyonight.nvim" },
   { "navarasu/onedark.nvim" },
+  { "ggandor/lightspeed.nvim" },
   {
     "Pocco81/TrueZen.nvim",
     cmd = {
