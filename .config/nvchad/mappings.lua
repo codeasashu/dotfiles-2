@@ -1,5 +1,11 @@
 local M = {}
 
+M.disabled = {
+   n = {
+      ["<S-b>"] = "",
+   },
+}
+
 M.truzen = {
    n = {
       ["<leader>ta"] = { "<cmd> TZAtaraxis <CR>", "   truzen ataraxis" },
@@ -65,4 +71,6 @@ M.gitsigns = {
 -- map('n', '<leader>tl', ":TestLast <CR>")
 -- map('n', '<leader>tv', ":TestVisit <CR>")
 --
+--
+
 return M
