@@ -1,5 +1,7 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:~/.local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:~/.local/bin:/opt/homebrew/opt/openjdk/bin:$HOME/Android:$PATH
+
+export ANDROID_SDK_ROOT=$HOME/Android
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"

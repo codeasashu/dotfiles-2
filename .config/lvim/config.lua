@@ -13,6 +13,8 @@ lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "onedarker"
 vim.wo.colorcolumn = '80'
+vim.g.mkdp_auto_start = 0
+vim.g.mkdp_auto_close = 0
 
 lvim.builtin.telescope.defaults.vimgrep_arguments = {
   "rg",
@@ -82,8 +84,8 @@ lvim.keys.normal_mode["<leader>m"] = "<cmd> NvimTreeToggle <CR>"
 lvim.keys.normal_mode["<leader>n"] = "<cmd> set nu! <CR>"
 lvim.keys.normal_mode["<leader>rn"] = "<cmd> set rnu! <CR>"
 lvim.keys.normal_mode["<leader>th"] = "<cmd> Telescope colorscheme <CR>"
--- lvim.keys.normal_mode[",/"] = "<cmd> Telescope live_grep <CR>"
--- lvim.keys.normal_mode[",p"] = "<cmd> Telescope git_files<CR>"
+lvim.keys.normal_mode[",/"] = "<cmd> Telescope live_grep <CR>"
+lvim.keys.normal_mode[",p"] = "<cmd> Telescope git_files<CR>"
 lvim.keys.normal_mode["[c"] = "<cmd> Gitsigns prev_hunk<CR>"
 lvim.keys.normal_mode["]c"] = "<cmd> Gitsigns next_hunk<CR>"
 lvim.keys.normal_mode["<leader>hp"] = "<cmd> Gitsigns preview_hunk<CR>"
@@ -204,6 +206,7 @@ lvim.builtin.treesitter.highlight.enabled = true
 --   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 -- end
 
+
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
@@ -216,7 +219,7 @@ formatters.setup {
     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
     extra_args = { "--print-with", "100" },
     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-    filetypes = { "typescript", "typescriptreact" },
+    filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
   },
 }
 
@@ -224,6 +227,7 @@ formatters.setup {
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
   { command = "flake8", filetypes = { "python" } },
+  { command = "eslint", filetypes = { "javascript", "jsx", "typescript", "typescriptreact" } },
   {
     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
     command = "shellcheck",
@@ -242,6 +246,23 @@ code_actions.setup {
     name = "gitsigns"
   }
 }
+
+-- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "tsserver" })
+require("lspconfig")["tsserver"].setup {
+  on_attach = function(client)
+    if client.config.flags then
+      client.config.flags.allow_incremental_sync = true
+    end
+    client.resolved_capabilities.document_formatting = false
+    -- set_lsp_config(client)
+  end
+  -- filetypes = { "typescript", "typescriptreact", "typescript.tsx" }
+}
+
+-- require("lspconfig")["eslint"].setup {
+-- filetypes = { "javascript", "javascriptreact" }
+-- }
+
 -- Additional Plugins
 lvim.plugins = {
   { "tpope/vim-dispatch" },
@@ -276,6 +297,10 @@ lvim.plugins = {
         -- refer to the configuration section below
       }
     end
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    run = function() vim.fn["mkdp#util#install"]() end,
   },
   {
     "sindrets/diffview.nvim",
