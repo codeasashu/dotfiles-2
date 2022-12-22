@@ -117,3 +117,14 @@ cd ~/.config
 
 ln -s /Users/$USER/.config/nvchad/ /Users/$USER/.config/nvim/lua/custom
 ```
+
+
+## FAQ
+
+### GPG error on git commit
+
+Import gpg keys:
+
+```
+gpg --import ~/.ssh/*.pem
+```
