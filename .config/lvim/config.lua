@@ -150,7 +150,7 @@ lvim.builtin.which_key.mappings["t"] = {
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
-lvim.builtin.notify.active = true
+-- lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
@@ -227,7 +227,7 @@ formatters.setup {
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
   { command = "flake8", filetypes = { "python" } },
-  { command = "eslint", filetypes = { "javascript", "jsx", "typescript", "typescriptreact" } },
+  { command = "eslint_d", filetypes = { "javascript", "jsx", "typescript", "typescriptreact" } },
   {
     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
     command = "shellcheck",
@@ -253,15 +253,15 @@ require("lspconfig")["tsserver"].setup {
     if client.config.flags then
       client.config.flags.allow_incremental_sync = true
     end
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = false
     -- set_lsp_config(client)
   end
   -- filetypes = { "typescript", "typescriptreact", "typescript.tsx" }
 }
 
--- require("lspconfig")["eslint"].setup {
--- filetypes = { "javascript", "javascriptreact" }
--- }
+require("lspconfig")["eslint_d"].setup {
+  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
+}
 
 -- Additional Plugins
 lvim.plugins = {
