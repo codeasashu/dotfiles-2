@@ -226,7 +226,7 @@ formatters.setup {
 -- -- set additional linters
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-  { command = "flake8",   filetypes = { "python" } },
+  { command = "flake8", filetypes = { "python" } },
   { command = "eslint_d", filetypes = { "javascript", "jsx", "typescript", "typescriptreact" } },
   {
     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
@@ -253,7 +253,7 @@ require("lspconfig")["tsserver"].setup {
     if client.config.flags then
       client.config.flags.allow_incremental_sync = true
     end
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = false
     -- set_lsp_config(client)
   end
   -- filetypes = { "typescript", "typescriptreact", "typescript.tsx" }

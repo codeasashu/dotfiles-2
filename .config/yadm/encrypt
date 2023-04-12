@@ -5,3 +5,4 @@
 .ssh/*.pem
 .ssh/*.gpg
 .config/mopidy/mopidy.conf
+.aws/*

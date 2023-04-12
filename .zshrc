@@ -99,6 +99,7 @@ plugins=(
   fasd
   terraform
   virtualenv
+  terraform
   docker-compose
   zsh-completions
   zsh-syntax-highlighting
@@ -150,3 +151,4 @@ export EDITOR=nvim
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/bin/terraform terraform
+export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
