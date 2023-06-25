@@ -16,6 +16,11 @@ vim.wo.colorcolumn = '80'
 vim.g.mkdp_auto_start = 0
 vim.g.mkdp_auto_close = 0
 
+vim.cmd [[
+let g:fugitive_gitlab_domains = ['https://gitlab.myoperator.biz']
+]]
+
+
 lvim.builtin.telescope.defaults.vimgrep_arguments = {
   "rg",
   "--color=never",
@@ -226,7 +231,7 @@ formatters.setup {
 -- -- set additional linters
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-  { command = "flake8", filetypes = { "python" } },
+  { command = "flake8",   filetypes = { "python" } },
   { command = "eslint_d", filetypes = { "javascript", "jsx", "typescript", "typescriptreact" } },
   {
     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
@@ -259,7 +264,7 @@ require("lspconfig")["tsserver"].setup {
   -- filetypes = { "typescript", "typescriptreact", "typescript.tsx" }
 }
 
-require("lspconfig")["eslint_d"].setup {
+require("lspconfig")["eslint"].setup {
   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
 }
 
@@ -273,7 +278,6 @@ lvim.plugins = {
   },
   { "vim-test/vim-test" },
   { "easymotion/vim-easymotion" },
-  { "folke/tokyonight.nvim" },
   { "navarasu/onedark.nvim" },
   { "ggandor/lightspeed.nvim" },
   {
