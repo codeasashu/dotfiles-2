@@ -217,6 +217,7 @@ local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "black", filetypes = { "python" } },
   { command = "isort", filetypes = { "python" } },
+  { command = "gofmt", filetypes = { "go" } },
   {
     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
     command = "prettier",
@@ -276,8 +277,11 @@ lvim.plugins = {
     "shumphrey/fugitive-gitlab.vim",
     after = "vim-fugitive",
   },
+  {
+    "tpope/vim-rhubarb",
+    after = "vim-fugitive",
+  },
   { "vim-test/vim-test" },
-  { "easymotion/vim-easymotion" },
   { "navarasu/onedark.nvim" },
   { "ggandor/lightspeed.nvim" },
   {
@@ -310,6 +314,19 @@ lvim.plugins = {
     "sindrets/diffview.nvim",
     event = "BufRead",
   },
+  {
+    "ray-x/go.nvim",
+    dependencies = { -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("go").setup()
+    end,
+    event = { "CmdlineEnter" },
+    ft = { "go", 'gomod' },
+  }
 }
 
 require('onedark').setup {
