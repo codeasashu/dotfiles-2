@@ -112,6 +112,11 @@ lvim.builtin.which_key.mappings["g"] = {
   b = { "<cmd> GBrowse <cr>", "workspace" },
 }
 
+lvim.builtin.which_key.mappings["h"] = {
+  name = "GitSigns",
+  p = { "<cmd> Gitsigns preview_hunk_inline <cr>", "document" },
+}
+
 
 vim.cmd("nnoremap <silent> gd <cmd>lua vim.lsp.buf.declaration()<CR>")
 vim.cmd("nnoremap <silent> [d <cmd>lua vim.diagnostic.goto_prev()<CR>")
@@ -193,7 +198,6 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- ---see the full default list `:lua print(vim.inspect(lvim.lsp.automatic_configuration.skipped_servers))`
 -- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
 -- local opts = {} -- check the lspconfig documentation for a list of all possible options
--- require("lvim.lsp.manager").setup("pyright", opts)
 
 -- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. !!Requires `:LvimCacheReset` to take effect!!
 -- ---`:LvimInfo` lists which server(s) are skiipped for the current filetype
@@ -212,6 +216,7 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- end
 
 
+require("lvim.lsp.manager").setup("pyright", opts)
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
@@ -253,21 +258,21 @@ code_actions.setup {
   }
 }
 
--- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "tsserver" })
-require("lspconfig")["tsserver"].setup {
-  on_attach = function(client)
-    if client.config.flags then
-      client.config.flags.allow_incremental_sync = true
-    end
-    client.server_capabilities.document_formatting = false
-    -- set_lsp_config(client)
-  end
-  -- filetypes = { "typescript", "typescriptreact", "typescript.tsx" }
-}
+-- -- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "tsserver" })
+-- require("lspconfig")["tsserver"].setup {
+--   on_attach = function(client)
+--     if client.config.flags then
+--       client.config.flags.allow_incremental_sync = true
+--     end
+--     client.server_capabilities.document_formatting = false
+--     -- set_lsp_config(client)
+--   end
+--   -- filetypes = { "typescript", "typescriptreact", "typescript.tsx" }
+-- }
 
-require("lspconfig")["eslint"].setup {
-  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
-}
+-- require("lspconfig")["eslint"].setup {
+--   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
+-- }
 
 -- Additional Plugins
 lvim.plugins = {
@@ -297,7 +302,7 @@ lvim.plugins = {
   },
   {
     "folke/trouble.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
+    dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
       require("trouble").setup {
         -- your configuration comes here
@@ -308,7 +313,7 @@ lvim.plugins = {
   },
   {
     "iamcco/markdown-preview.nvim",
-    run = function() vim.fn["mkdp#util#install"]() end,
+    build = function() vim.fn["mkdp#util#install"]() end,
   },
   {
     "sindrets/diffview.nvim",
@@ -332,7 +337,6 @@ lvim.plugins = {
 require('onedark').setup {
   style = 'darker'
 }
-require('onedark').load()
 
 -- require('telescope').setup {
 --   defaults = {
