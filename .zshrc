@@ -127,7 +127,7 @@ source $ZSH/oh-my-zsh.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-alias v="lvim" # nvim
+alias v="nvim --listen /tmp/nvim-server.pipe" # nvim
 alias asterisk="docker run --rm -ti -d --name asterisk -p 5061:5060 -p 5060:5060/udp -v ${HOME}/code/asterisk/logs:/var/log/asterisk myop/asterisk:16"
 
 export NVM_DIR="$HOME/.nvm"
