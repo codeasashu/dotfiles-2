@@ -74,6 +74,9 @@
 	# Show the user email for the current repository.
 	whoami = config user.email
 
+  files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
+  review = !lvim -p $(git ls-files) +\"tabdo Gdiff $REVIEW_BASE\" +\"let g:gitgutter_diff_base = '$REVIEW_BASE'\"
+
 [apply]
 
 	# Detect whitespace errors when applying a patch.

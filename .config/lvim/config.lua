@@ -15,6 +15,16 @@ lvim.colorscheme = "onedarker"
 vim.wo.colorcolumn = '80'
 vim.g.mkdp_auto_start = 0
 vim.g.mkdp_auto_close = 0
+vim.g.python_recommended_style = 0
+vim.g.python_recommended_style = 0
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.expandtab = true
+
+
+vim.cmd [[
+let g:fugitive_gitlab_domains = ['https:/gitlab.myoperator.biz']
+]]
 
 lvim.builtin.telescope.defaults.vimgrep_arguments = {
   "rg",
@@ -227,7 +237,7 @@ formatters.setup {
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
   { command = "flake8", filetypes = { "python" } },
-  { command = "eslint_d", filetypes = { "javascript", "jsx", "typescript", "typescriptreact" } },
+  { command = "eslint", filetypes = { "javascript", "jsx", "typescript", "typescriptreact" } },
   {
     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
     command = "shellcheck",
@@ -259,7 +269,7 @@ require("lspconfig")["tsserver"].setup {
   -- filetypes = { "typescript", "typescriptreact", "typescript.tsx" }
 }
 
-require("lspconfig")["eslint_d"].setup {
+require("lspconfig")["eslint"].setup {
   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
 }
 
@@ -289,7 +299,7 @@ lvim.plugins = {
   },
   {
     "folke/trouble.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
+    dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
       require("trouble").setup {
         -- your configuration comes here
@@ -300,7 +310,7 @@ lvim.plugins = {
   },
   {
     "iamcco/markdown-preview.nvim",
-    run = function() vim.fn["mkdp#util#install"]() end,
+    build = function() vim.fn["mkdp#util#install"]() end,
   },
   {
     "sindrets/diffview.nvim",
