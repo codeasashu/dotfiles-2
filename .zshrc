@@ -88,6 +88,7 @@ DISABLE_MAGIC_FUNCTIONS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  poetry
   git
   fasd
   virtualenv
@@ -125,12 +126,14 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 alias v="nvim --listen /tmp/nvim-server.pipe" # nvim
+alias poetry_activate='source "$( poetry env info --path )/bin/activate"'
 alias asterisk="docker run --rm -ti -d --name asterisk -p 5061:5060 -p 5060:5060/udp -v ${HOME}/code/asterisk/logs:/var/log/asterisk myop/asterisk:16"
 
 
+export ZK_NOTEBOOK_DIR="$HOME/Documents/my-notes"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export EDITOR=nvim
@@ -139,3 +142,9 @@ export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
+eval "$(fzf --zsh)"
+export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
+
+poetry config virtualenvs.in-project true

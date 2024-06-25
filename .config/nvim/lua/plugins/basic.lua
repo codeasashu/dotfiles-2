@@ -22,6 +22,16 @@ return {
     "shumphrey/fugitive-gitlab.vim",
     after = "vim-fugitive",
   },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    after = "mfussenegger/nvim-dap",
+    opts = {
+      ensure_installed = {
+        "delve",
+      },
+    },
+    config = true,
+  },
   -- add symbols-outline
   {
     "simrat39/symbols-outline.nvim",
@@ -30,15 +40,15 @@ return {
     config = true,
   },
 
-  -- override nvim-cmp and add cmp-emoji
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = { "hrsh7th/cmp-emoji" },
-    ---@param opts cmp.ConfigSchema
-    opts = function(_, opts)
-      table.insert(opts.sources, { name = "emoji" })
-    end,
-  },
+  -- -- override nvim-cmp and add cmp-emoji
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   dependencies = { "hrsh7th/cmp-emoji" },
+  --   ---@param opts cmp.ConfigSchema
+  --   opts = function(_, opts)
+  --     table.insert(opts.sources, { name = "emoji" })
+  --   end,
+  -- },
 
   -- change some telescope options and a keymap to browse plugin files
   {
@@ -88,39 +98,22 @@ return {
     },
   },
 
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {
+        setup = {
+            on_attach = function(client)
+              client.server_capabilities.documentFormattingProvider = true
+              client.server_capabilities.documentRangeFormattingProvider = true
+            end,
+        }
+    },
+  },
+
   -- add tsserver and setup with typescript.nvim instead of lspconfig
   {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      "jose-elias-alvarez/typescript.nvim",
-      init = function()
-        require("lazyvim.util").lsp.on_attach(function(_, buffer)
-          -- stylua: ignore
-          vim.keymap.set( "n", "<leader>co", "TypescriptOrganizeImports", { buffer = buffer, desc = "Organize Imports" })
-          vim.keymap.set("n", "<leader>cR", "TypescriptRenameFile", { desc = "Rename File", buffer = buffer })
-        end)
-      end,
-    },
-    ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        -- tsserver will be automatically installed with mason and loaded with lspconfig
-        tsserver = {},
-      },
-      -- you can do any additional lsp server setup here
-      -- return true if you don't want this server to be setup with lspconfig
-      ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-      setup = {
-        -- example to setup with typescript.nvim
-        tsserver = function(_, opts)
-          require("typescript").setup({ server = opts })
-          return true
-        end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
-      },
-    },
+    "neovim/nvim-lspconfig"
   },
 
   -- for typescript, LazyVim also includes extra specs to properly setup lspconfig,
@@ -198,65 +191,85 @@ return {
   -- first: disable default <tab> and <s-tab> behavior in LuaSnip
   {
     "L3MON4D3/LuaSnip",
+    version = "v2.*",
     keys = function()
       return {}
     end,
   },
   -- then: setup supertab in cmp
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      "hrsh7th/cmp-emoji",
-    },
-    ---@param opts cmp.ConfigSchema
-    opts = function(_, opts)
-      local has_words_before = function()
-        unpack = unpack or table.unpack
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-      end
-
-      local luasnip = require("luasnip")
-      local cmp = require("cmp")
-
-      opts.mapping = vim.tbl_extend("force", opts.mapping, {
-        ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-            -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-            -- this way you will only jump inside the snippet region
-          elseif luasnip.expand_or_jumpable() then
-            luasnip.expand_or_jump()
-          elseif has_words_before() then
-            cmp.complete()
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          elseif luasnip.jumpable(-1) then
-            luasnip.jump(-1)
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-      })
-    end,
-  },
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   dependencies = {
+  --     "hrsh7th/cmp-emoji",
+  --   },
+  --  ---@param opts cmp.ConfigSchema
+  -- opts = function(_, opts)
+  --   -- local has_words_before = function()
+  --   --   unpack = unpack or table.unpack
+  --   --   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  --   --   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+  --   -- end
+  --
+  --   local cmp = require("cmp")
+  --
+  --
+  --   opts.snippet = {
+  --       expand = function(args)
+  --           require('luasnip').lsp_expand(args.body)
+  --       end,
+  --   }
+  --
+  --   opts.mapping = {
+  --     ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+  --     ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+  --     ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+  --     ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+  --     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+  --     ['<C-f>'] = cmp.mapping.scroll_docs(4),
+  --     ['<C-Space>'] = cmp.mapping.complete(),
+  --     ['<C-e>'] = cmp.mapping.close(),
+  --     ['<CR>'] = cmp.mapping.confirm({
+  --       behavior = cmp.ConfirmBehavior.Replace,
+  --       select = true,
+  --       }),
+  --   }
+  -- end,
+  -- },
   {
     "nvimtools/none-ls.nvim",
     dependencies = {
       "williamboman/mason.nvim",
+      "nvimtools/none-ls-extras.nvim",
     },
     opts = function(_, opts)
       local nls = require("null-ls")
       opts.sources = vim.list_extend(opts.sources or {}, {
         nls.builtins.formatting.isort,
         nls.builtins.diagnostics.flake8,
+        nls.builtins.formatting.prettier,
+        require("none-ls.diagnostics.eslint"),
       })
       return opts
     end,
   },
+  {
+    "stevearc/aerial.nvim",
+    event = "LazyFile",
+    opts = {
+        layout = {
+            max_width = { 40, 0.2 },
+            width = nil,
+            min_width = 20,
+        }
+    },
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
+  },
+    {
+        "codeasashu/oas.nvim",
+}
 }
