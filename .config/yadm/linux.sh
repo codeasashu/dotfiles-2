@@ -4,12 +4,11 @@ sudo pacman -Syyu
 
 install_stuff() {
   sudo pacman -S fasd fzf jq httpie diff-so-fancy python python-pip ripgrep \
-    tmux android-file-transfer mpv ncmpcpp mopidy bat ctags docker \
-    tig kitty sxiv maim
+    tmux android-file-transfer mpv ctags kitty sxiv maim vivaldi
 }
 
 install_yay_stuff() {
-  yay -S brave-browser slack-desktop mopidy-mpd
+  yay -S slack-desktop
 }
 
 post_install() {
