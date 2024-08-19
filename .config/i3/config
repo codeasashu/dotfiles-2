@@ -183,7 +183,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+q kill
 
 # exit-menu
-bindsym $mod+Shift+e exec ~/.config/i3/scripts/powermenu
+bindsym $mod+Shift+e exec rofi -show p -modi p:~/.config/i3/scripts/power-menu
 
 # Lock the system
 # lock with a picture:
