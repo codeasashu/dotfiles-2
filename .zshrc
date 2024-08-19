@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:~/.local/bin:/opt/homebrew/opt/openjdk/bin:$HOME/Android:$PATH
+export PATH=$HOME/bin:/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:~/.local/bin:/opt/homebrew/opt/openjdk/bin:$HOME/Android:/opt/nvim-linux64/bin:$PATH
 
 export ANDROID_SDK_ROOT=$HOME/Android
 
@@ -138,6 +138,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
+export PATH=$PATH:/usr/local/go/bin
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -148,3 +149,4 @@ eval "$(fzf --zsh)"
 export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 
 poetry config virtualenvs.in-project true
+export CPATH=/usr/include/python3.12:$CPATH
