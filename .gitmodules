@@ -1,3 +1,6 @@
 [submodule "tmux-config"]
 	path = tmux-config
 	url = https://github.com/samoshkin/tmux-config
+[submodule "/home/ashutosh/.config/i3/bumblebee-status"]
+	path = /home/ashutosh/.config/i3/bumblebee-status
+	url = https://github.com/tobi-wan-kenobi/bumblebee-status.git
