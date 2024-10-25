@@ -23,6 +23,10 @@ return {
     after = "vim-fugitive",
   },
   {
+    "tpope/vim-rhubarb",
+    after = "vim-fugitive",
+  },
+  {
     "jay-babu/mason-nvim-dap.nvim",
     after = "mfussenegger/nvim-dap",
     opts = {
@@ -94,6 +98,15 @@ return {
       servers = {
         -- pyright will be automatically installed with mason and loaded with lspconfig
         pyright = {},
+        golangci_lint_ls = {},
+        yamlls = {
+            settings = {
+                format = {
+                    enable = false,
+                    singleQuote = true,
+                },
+            }
+        }
       },
     },
   },
@@ -112,10 +125,6 @@ return {
   },
 
   -- add tsserver and setup with typescript.nvim instead of lspconfig
-  {
-    "neovim/nvim-lspconfig"
-  },
-
   -- for typescript, LazyVim also includes extra specs to properly setup lspconfig,
   -- treesitter, mason and typescript.nvim. So instead of the above, you can use:
   { import = "lazyvim.plugins.extras.lang.typescript" },
@@ -246,7 +255,7 @@ return {
       opts.sources = vim.list_extend(opts.sources or {}, {
         nls.builtins.formatting.isort,
         nls.builtins.diagnostics.flake8,
-        nls.builtins.formatting.prettier,
+        -- nls.builtins.formatting.prettier,
         require("none-ls.diagnostics.eslint"),
       })
       return opts
@@ -264,12 +273,15 @@ return {
     },
   },
   {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    ft = { "markdown" },
-    build = function() vim.fn["mkdp#util#install"]() end,
+    'MeanderingProgrammer/render-markdown.nvim',
+    opts = {},
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
   },
-    {
+  {
         "codeasashu/oas.nvim",
-}
+  },
+  {
+   'Exafunction/codeium.vim',
+   event = 'BufEnter'
+  }
 }

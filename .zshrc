@@ -150,3 +150,4 @@ export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 
 poetry config virtualenvs.in-project true
 export CPATH=/usr/include/python3.12:$CPATH
+export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
