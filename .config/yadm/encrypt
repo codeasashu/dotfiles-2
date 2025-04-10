@@ -2,6 +2,8 @@
 .ssh/config
 .ssh/id_rsa
 .ssh/id_rsa.pub
+.ssh/gitlab
+.ssh/gitlab.pub
 .ssh/*.pem
 .ssh/*.gpg
 .config/mopidy/mopidy.conf
