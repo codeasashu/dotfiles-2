@@ -88,7 +88,6 @@ DISABLE_MAGIC_FUNCTIONS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  poetry
   git
   fasd
   virtualenv
@@ -128,8 +127,7 @@ source $ZSH/oh-my-zsh.sh
 
 # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-alias v="nvim --listen /tmp/nvim-server.pipe" # nvim
-alias poetry_activate='source "$( poetry env info --path )/bin/activate"'
+alias v="nvim" # nvim
 alias asterisk="docker run --rm -ti -d --name asterisk -p 5061:5060 -p 5060:5060/udp -v ${HOME}/code/asterisk/logs:/var/log/asterisk myop/asterisk:16"
 
 
@@ -138,7 +136,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export EDITOR=nvim
 export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
-export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/usr/local/go/bin:/opt/homebrew/bin
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -148,8 +146,6 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 eval "$(fzf --zsh)"
 export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 
-poetry config virtualenvs.in-project true
 export CPATH=/usr/include/python3.12:$CPATH
-export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
-export PATH="/opt/homebrew/opt/mysql/bin:$PATH"
 eval "$(uv generate-shell-completion zsh)"
+eval "$(zoxide init zsh)"

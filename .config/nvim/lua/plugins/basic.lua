@@ -43,4 +43,14 @@ return {
       end
     end,
   },
+  {
+    'stevearc/conform.nvim',
+    opts = {
+       formatters_by_ft = {
+          lua = { "stylua" },
+          python = { "isort", "ruff" },
+          javascript = { "prettierd", "prettier", stop_after_first = true },
+        },
+    }
+  }
 }
