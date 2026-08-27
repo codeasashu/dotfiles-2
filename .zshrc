@@ -149,3 +149,4 @@ export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 export CPATH=/usr/include/python3.12:$CPATH
 eval "$(uv generate-shell-completion zsh)"
 eval "$(zoxide init zsh)"
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
